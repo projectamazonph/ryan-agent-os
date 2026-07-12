@@ -1,0 +1,49 @@
+{
+  "properties": {
+    "confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "domain": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Domain",
+      "type": "string"
+    },
+    "engine": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Engine",
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 12,
+      "title": "Evidence",
+      "type": "array"
+    },
+    "intent": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Intent",
+      "type": "string"
+    },
+    "needs_review": {
+      "title": "Needs Review",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "domain",
+    "intent",
+    "confidence",
+    "engine",
+    "needs_review"
+  ],
+  "title": "ClassificationResult",
+  "type": "object"
+}

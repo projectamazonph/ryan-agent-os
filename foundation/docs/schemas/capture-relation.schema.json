@@ -1,0 +1,43 @@
+{
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "relation_type": {
+      "title": "Relation Type",
+      "type": "string"
+    },
+    "source_capture_id": {
+      "format": "uuid",
+      "title": "Source Capture Id",
+      "type": "string"
+    },
+    "target_capture_id": {
+      "format": "uuid",
+      "title": "Target Capture Id",
+      "type": "string"
+    },
+    "workspace_id": {
+      "format": "uuid",
+      "title": "Workspace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "workspace_id",
+    "source_capture_id",
+    "target_capture_id",
+    "relation_type",
+    "created_at"
+  ],
+  "title": "CaptureRelationResponse",
+  "type": "object"
+}

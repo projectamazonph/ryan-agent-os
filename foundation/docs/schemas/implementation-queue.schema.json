@@ -1,0 +1,150 @@
+{
+  "$defs": {
+    "TaskResponse": {
+      "properties": {
+        "blocked_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocked By",
+          "type": "array"
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Completed At"
+        },
+        "confidence": {
+          "title": "Confidence",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "dependency_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dependency Keys",
+          "type": "array"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "effort": {
+          "title": "Effort",
+          "type": "integer"
+        },
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "impact": {
+          "title": "Impact",
+          "type": "integer"
+        },
+        "is_ready": {
+          "title": "Is Ready",
+          "type": "boolean"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "position": {
+          "title": "Position",
+          "type": "integer"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "project_title": {
+          "title": "Project Title",
+          "type": "string"
+        },
+        "rank_score": {
+          "title": "Rank Score",
+          "type": "integer"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "task_graph_id": {
+          "format": "uuid",
+          "title": "Task Graph Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "urgency": {
+          "title": "Urgency",
+          "type": "integer"
+        },
+        "verification": {
+          "title": "Verification",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "task_graph_id",
+        "project_id",
+        "project_title",
+        "key",
+        "title",
+        "description",
+        "verification",
+        "status",
+        "impact",
+        "urgency",
+        "confidence",
+        "effort",
+        "rank_score",
+        "position",
+        "dependency_keys",
+        "blocked_by",
+        "is_ready",
+        "created_at",
+        "updated_at",
+        "completed_at"
+      ],
+      "title": "TaskResponse",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "items": {
+      "items": {
+        "$ref": "#/$defs/TaskResponse"
+      },
+      "title": "Items",
+      "type": "array"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "title": "ImplementationQueueResponse",
+  "type": "object"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Ryan Agent OS",
+  "version": "0.4.0-task-graph-queue",
+  "generated_on": "2026-07-13",
+  "entrypoint": "README.md",
+  "documentation_index": "docs/00_INDEX.md",
+  "implementation_status": "docs/21_IMPLEMENTATION_STATUS.md",
+  "phase_build_log": "docs/26_PHASE4_BUILD_LOG.md",
+  "engineering_standard": "docs/23_TDD_AND_LOOP_ENGINEERING.md",
+  "openapi": "docs/api/openapi.json",
+  "validation": {
+    "backend_tests_passed": 38,
+    "frontend_tests_passed": 14,
+    "reversible_migrations": true,
+    "production_npm_vulnerabilities": 0,
+    "generated_json_schemas": 14
+  },
+  "source_file_count": 214
+}

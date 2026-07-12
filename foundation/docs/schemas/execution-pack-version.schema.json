@@ -1,0 +1,221 @@
+{
+  "$defs": {
+    "DeliverableSpec": {
+      "properties": {
+        "acceptance_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Acceptance Criteria",
+          "type": "array"
+        },
+        "description": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "format": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Format",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "format",
+        "acceptance_criteria"
+      ],
+      "title": "DeliverableSpec",
+      "type": "object"
+    },
+    "ExecutionPackContent": {
+      "properties": {
+        "assumptions": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "deliverables": {
+          "items": {
+            "$ref": "#/$defs/DeliverableSpec"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Deliverables",
+          "type": "array"
+        },
+        "in_scope": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "minItems": 1,
+          "title": "In Scope",
+          "type": "array"
+        },
+        "objective": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "out_of_scope": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Out Of Scope",
+          "type": "array"
+        },
+        "problem_statement": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Problem Statement",
+          "type": "string"
+        },
+        "recommended_agents": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Recommended Agents",
+          "type": "array"
+        },
+        "risks": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Risks",
+          "type": "array"
+        },
+        "success_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Success Criteria",
+          "type": "array"
+        },
+        "workstreams": {
+          "items": {
+            "$ref": "#/$defs/WorkstreamSpec"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Workstreams",
+          "type": "array"
+        }
+      },
+      "required": [
+        "objective",
+        "problem_statement",
+        "success_criteria",
+        "in_scope",
+        "deliverables",
+        "workstreams"
+      ],
+      "title": "ExecutionPackContent",
+      "type": "object"
+    },
+    "WorkstreamSpec": {
+      "properties": {
+        "goal": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Goal",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Steps",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "goal",
+        "steps"
+      ],
+      "title": "WorkstreamSpec",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "approved_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Approved At"
+    },
+    "change_summary": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Change Summary"
+    },
+    "content": {
+      "$ref": "#/$defs/ExecutionPackContent"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "version_number": {
+      "title": "Version Number",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "id",
+    "version_number",
+    "content",
+    "change_summary",
+    "created_at",
+    "approved_at"
+  ],
+  "title": "ExecutionPackVersionResponse",
+  "type": "object"
+}
