@@ -4,7 +4,7 @@ Ryan Agent OS is a personal AI execution operating system that converts raw cont
 
 ## Current release
 
-Version: `0.4.0-task-graph-queue`
+Version: `0.5.0-agent-execution`
 
 The repository now includes:
 
@@ -23,9 +23,15 @@ The repository now includes:
 - Versioned execution packs with generation, regeneration, and approval
 - Approval-traceable, dependency-aware task graphs with cycle rejection
 - Ranked cross-project implementation queue with guarded task transitions
+- Versioned specialist-agent definitions with immutable policy contracts
+- Checksum-addressed context packages tied to exact tasks and approved plans
+- Auditable agent-run state machine with usage, cost, retry, and verification lineage
+- Tool allowlists with persisted allow and deny decisions
+- Deterministic bounded executor and QA verification baseline
+- Agent run console with cancellation, retry, QA, and resumable live event traces
 - Tests-first release gates and generated API contracts with drift protection
 
-Agent execution, approval-center policies, artifacts, and external connector writes remain intentionally deferred.
+Approval-center policies, artifact production, real connector execution, and live general-purpose model-driven agent work remain intentionally deferred.
 
 ## Engineering method
 
@@ -42,6 +48,8 @@ See [Test-Driven Development and Loop Engineering](docs/23_TDD_AND_LOOP_ENGINEER
 - `rules`: deterministic offline baseline and default
 - `hermes`: local OpenAI-compatible endpoint
 - `cloud`: hosted OpenAI-compatible endpoint; requires `RAOS_MODEL_API_KEY`
+
+The classification gateway has OpenAI-compatible Hermes and cloud adapters. Agent runs currently record their intended route but execute through the deterministic bounded baseline. Live model-driven agent execution must not be inferred from the routing metadata.
 
 The current embedding baseline is a deterministic local hash projection stored in a pgvector-compatible column. It keeps development reproducible and offline, but it is not presented as a production semantic embedding model.
 
@@ -106,6 +114,8 @@ make contracts
 
 The owner-password bootstrap is for the private MVP only. Production rollout must replace it with passwordless login or an identity provider, move secrets into a managed secret store, terminate TLS at the edge, and set `COOKIE_SECURE=true`.
 
+Tool authorization in this release records policy decisions but does not execute external connector actions. Protected writes remain blocked until the approval center is implemented.
+
 ## Documentation
 
-Start with the [Documentation Index](docs/00_INDEX.md), [Implementation Status](docs/21_IMPLEMENTATION_STATUS.md), and [Phase 4 Build Log](docs/26_PHASE4_BUILD_LOG.md). Generated OpenAPI and JSON Schemas are stored under `docs/api/` and `docs/schemas/`.
+Start with the [Documentation Index](docs/00_INDEX.md), [Implementation Status](docs/21_IMPLEMENTATION_STATUS.md), and [Phase 5 Build Log](docs/27_PHASE5_BUILD_LOG.md). Generated OpenAPI and JSON Schemas are stored under `docs/api/` and `docs/schemas/`.

@@ -2,14 +2,14 @@
 
 ## Release
 
-- Version: `0.4.0-task-graph-queue`
+- Version: `0.5.0-agent-execution`
 - Date: 2026-07-13
-- Status: Validated task-graph and implementation-queue slice
+- Status: Validated bounded-agent execution foundation
 - Engineering method: Test-Driven Development and Loop Engineering
 
 ## Implemented
 
-### Foundation through execution packs retained
+### Foundation through implementation queue retained
 
 - Next.js and FastAPI monorepo
 - PostgreSQL-compatible SQLAlchemy models and reversible Alembic migrations
@@ -18,62 +18,80 @@
 - Text and file capture with extraction, classification, embeddings, and hybrid related-context ranking
 - Capture review actions and searchable project registry
 - Versioned execution packs with deterministic planning and exact-version approval
+- Approval-traceable task graphs, guarded task transitions, and ranked implementation queue
 
-### Approved task graphs
+### Versioned agent registry
 
-- One task graph per approved execution-pack version
-- Exact source-version ID, version number, and approval timestamp retained in responses
-- Deterministic workstream-to-task planner
-- Directed task dependencies
-- Explicit duplicate-key and unknown-dependency validation
-- Deterministic cycle detection with the detected cycle path
-- Idempotent graph generation for the same approved version
-- Prior active graph superseded when a newer approved version is materialized
-- Historical graphs and tasks retained for traceability
+- Immutable agent definitions keyed by stable name and integer version
+- Idempotent seeding of six built-in specialists: orchestrator, developer, documentation, research, QA, and Amazon PPC
+- Typed purpose, task-type, input, output, tool, denied-action, routing, budget, escalation, and evaluation policies
+- Latest active definition listing and complete version history
+- Definition identity retained on every run
 
-### Task state and readiness
+### Immutable context packages
 
-- Task states: planned, in progress, blocked, done, and skipped
-- Guarded state transitions
-- Blocked tasks cannot start or complete before dependencies resolve
-- Done and skipped dependencies unlock downstream work
-- Completion timestamp retained
-- Status changes audited
-- Readiness and blocked-by data derived from current dependency state
+- Context generated only for a specific ready task and agent definition
+- Exact project, task, graph, and approved execution-pack provenance
+- Selected source excerpts, constraints, success criteria, tool policy, and execution ceilings
+- Canonical SHA-256 checksum
+- Exact-package reuse without silent mutation
+- Retry runs preserve the original context-package identity
 
-### Ranked implementation queue
+### Auditable agent runs
 
-- Cross-project queue from active task graphs only
-- Ready work sorted above blocked work
-- In-progress work prioritized within ready work
-- Deterministic rank score using impact, urgency, confidence, and inverse effort
-- Project provenance, verification criteria, dependencies, and score signals shown in the UI
-- Start, complete, and manually block controls
-- Project workspace task-graph panel
-- Dedicated implementation-queue page
+- States: queued, preparing context, running, waiting for tool, waiting for approval, needs review, succeeded, failed, and cancelled
+- Guarded transition map with invalid-transition rejection
+- Append-only, monotonically sequenced run events
+- Attempt number, retry parent, and verification parent lineage
+- Model provider and model name recorded per run
+- Prompt tokens, completion tokens, estimated cost, timestamps, output, and error records
+- Ready-task enforcement before run creation
+- Cancellation and retry controls
+- Deterministic bounded execution baseline
+
+### Tool policy and QA verification
+
+- Per-run tool allowlist copied from the immutable definition
+- Every tool request records name, arguments hash, arguments, decision, result, and error
+- Denied requests persist before HTTP 403 is returned
+- QA runs use a versioned QA definition and explicit verification lineage
+- Only QA verification can promote a reviewed source run to succeeded
+- Structural evidence and success-criteria checks produce pass or fail verdicts
+
+### Run console and trace transport
+
+- Agent launch controls attached to ready queue tasks
+- Run registry and operator console
+- Execute, cancel, retry, and QA verification actions
+- Run state, model route, usage, cost, output, error, and lineage display
+- Server-sent event trace endpoint with sequence cursors
+- `Last-Event-ID` resume support for browser reconnection
+- Bounded follow window and heartbeat frames
+- Same-origin Next.js streaming proxy
+- On-demand live trace panel with ordered, deduplicated events
 
 ### TDD and release discipline
 
 - Tests-first engineering policy and ADR
-- Backend unit, service, API, dependency, transition, and contract tests
-- Frontend component interaction tests
-- Reversible migration gate through migration `0006`
+- Backend unit, service, API, policy, transition, stream, and contract tests
+- Frontend component interaction and EventSource tests
+- Reversible migration gate through migration `0007`
 - Generated OpenAPI and JSON Schema drift protection
 - Static analysis, dependency integrity, and optimized production-build gates
 
 ## Validation evidence
 
-- Backend: 38 tests passed
-- Frontend: 14 tests passed across 8 files
+- Backend: 49 tests passed
+- Frontend: 18 tests passed across 11 files
 - Ruff: passed
-- Strict MyPy: passed across 60 source files
-- Alembic upgrade, downgrade, and re-upgrade through migration `0006`: passed
+- Strict MyPy: passed across 67 source files
+- Alembic upgrade, downgrade, and re-upgrade through migration `0007`: passed
 - ESLint: passed
 - TypeScript: passed
 - Next.js optimized production build: passed
 - Python dependency integrity: passed
 - Production npm dependency audit: 0 vulnerabilities
-- OpenAPI and fourteen JSON Schemas regenerated and drift-tested
+- OpenAPI and nineteen JSON Schemas regenerated and drift-tested
 
 ## Partial backlog coverage
 
@@ -83,22 +101,26 @@
 - RAOS-507: status history is stored; status-edit workflow remains
 - RAOS-704: a ranked queue exists; calendar-aware Today scheduling remains
 - RAOS-705: blocked and ready states are visible; dedicated filters remain
+- RAOS-805: resumable database-polled SSE exists; distributed pub/sub fanout remains
+- RAOS-809: deterministic structural QA exists; deeper domain and provider-backed evaluation remains
 
 ## Deliberately deferred
 
 - Section-level execution-pack editing and diff view
-- Manual rank override, evidence attachments, and queue filters
-- Task assignment, scheduling, estimates, and stale-work policy
-- Agent registry, agent-run state machine, tool policy, retry, and cancellation
-- Approval center and protected external actions
-- Artifact registry and validation pipeline
-- External GitHub and Drive writes
+- Manual rank override, evidence attachments, queue filters, and scheduling
+- Real connector tool execution
+- Approval center and protected external-action policies
+- Artifact registry, versioning, generation, and validation pipeline
+- Live Hermes or cloud execution of general agent tasks
+- Distributed run-event fanout through Redis or a workflow engine
 - Full container-backed browser end-to-end suite
 
-## Known environment limit
+## Known environment and implementation limits
 
 Docker was not available in the build environment. Reversible migrations were validated against SQLite. The PostgreSQL configuration uses a pgvector-enabled image, but a live PostgreSQL, Redis, MinIO, worker, and browser integration run remains required before production deployment.
 
+Hermes and cloud transports were previously tested with mocked OpenAI-compatible responses. The agent executor in this release is deterministic. Tool invocation endpoints enforce and record policy but do not call external systems. QA verification is a structural baseline, not a claim of expert-level autonomous review.
+
 ## Next implementation slice
 
-Create the agent-execution foundation: versioned agent definitions, bounded context packages, an auditable agent-run state machine, tool allowlists, cancellation and retry rules, and a run console. The first red loop should prove that an agent cannot start from a blocked task or invoke a tool outside its policy.
+Build the approval center and artifact foundation: protected-action policies, immutable approval requests, approve/reject/revoke flows, artifact registry and versions, Markdown generation, validation receipts, and a guarded path from verified agent output to a reviewable deliverable.

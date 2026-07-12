@@ -1,0 +1,116 @@
+{
+  "properties": {
+    "allowed_task_types": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Allowed Task Types",
+      "type": "array"
+    },
+    "allowed_tools": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Allowed Tools",
+      "type": "array"
+    },
+    "cost_ceiling_cents": {
+      "title": "Cost Ceiling Cents",
+      "type": "integer"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "denied_actions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Denied Actions",
+      "type": "array"
+    },
+    "escalation_conditions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Escalation Conditions",
+      "type": "array"
+    },
+    "evaluation_rubric": {
+      "additionalProperties": true,
+      "title": "Evaluation Rubric",
+      "type": "object"
+    },
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "input_schema": {
+      "additionalProperties": true,
+      "title": "Input Schema",
+      "type": "object"
+    },
+    "is_active": {
+      "title": "Is Active",
+      "type": "boolean"
+    },
+    "key": {
+      "title": "Key",
+      "type": "string"
+    },
+    "max_iterations": {
+      "title": "Max Iterations",
+      "type": "integer"
+    },
+    "model_policy": {
+      "additionalProperties": true,
+      "title": "Model Policy",
+      "type": "object"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "output_schema": {
+      "additionalProperties": true,
+      "title": "Output Schema",
+      "type": "object"
+    },
+    "purpose": {
+      "title": "Purpose",
+      "type": "string"
+    },
+    "timeout_seconds": {
+      "title": "Timeout Seconds",
+      "type": "integer"
+    },
+    "version": {
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "id",
+    "key",
+    "version",
+    "name",
+    "purpose",
+    "allowed_task_types",
+    "input_schema",
+    "output_schema",
+    "allowed_tools",
+    "denied_actions",
+    "model_policy",
+    "max_iterations",
+    "timeout_seconds",
+    "cost_ceiling_cents",
+    "escalation_conditions",
+    "evaluation_rubric",
+    "is_active",
+    "created_at"
+  ],
+  "title": "AgentDefinitionResponse",
+  "type": "object"
+}

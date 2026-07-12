@@ -1,315 +1,903 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "Ryan Agent OS API",
-    "description": "Governed execution API for Ryan Agent OS.",
-    "version": "0.1.0"
-  },
-  "paths": {
-    "/health/live": {
-      "get": {
-        "tags": [
-          "health"
-        ],
-        "summary": "Live",
-        "operationId": "live_health_live_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/auth/login": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Login",
-        "operationId": "login_api_v1_auth_login_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TokenResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/auth/me": {
-      "get": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Me",
-        "operationId": "me_api_v1_auth_me_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthenticatedOwner"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/captures": {
-      "post": {
-        "tags": [
-          "captures"
-        ],
-        "summary": "Create Capture Route",
-        "operationId": "create_capture_route_api_v1_captures_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CaptureCreate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptureResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "captures"
-        ],
-        "summary": "List Capture Route",
-        "operationId": "list_capture_route_api_v1_captures_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "default": 50,
-              "title": "Limit"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptureListResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/captures/{capture_id}": {
-      "get": {
-        "tags": [
-          "captures"
-        ],
-        "summary": "Get Capture Route",
-        "operationId": "get_capture_route_api_v1_captures__capture_id__get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "capture_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Capture Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptureResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/captures/{capture_id}/process": {
-      "post": {
-        "tags": [
-          "captures"
-        ],
-        "summary": "Process Capture Route",
-        "operationId": "process_capture_route_api_v1_captures__capture_id__process_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "capture_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Capture Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptureResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
   "components": {
     "schemas": {
+      "AgentContextPackageResponse": {
+        "properties": {
+          "acceptance_criteria": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Acceptance Criteria",
+            "type": "array"
+          },
+          "allowed_tools": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Allowed Tools",
+            "type": "array"
+          },
+          "checksum_sha256": {
+            "title": "Checksum Sha256",
+            "type": "string"
+          },
+          "cost_ceiling_cents": {
+            "title": "Cost Ceiling Cents",
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "decisions_constraints": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Decisions Constraints",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "max_iterations": {
+            "title": "Max Iterations",
+            "type": "integer"
+          },
+          "objective": {
+            "title": "Objective",
+            "type": "string"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "title": "Output Schema",
+            "type": "object"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "project_summary": {
+            "title": "Project Summary",
+            "type": "string"
+          },
+          "source_excerpts": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Source Excerpts",
+            "type": "array"
+          },
+          "source_execution_pack_version_id": {
+            "format": "uuid",
+            "title": "Source Execution Pack Version Id",
+            "type": "string"
+          },
+          "task_graph_id": {
+            "format": "uuid",
+            "title": "Task Graph Id",
+            "type": "string"
+          },
+          "task_id": {
+            "format": "uuid",
+            "title": "Task Id",
+            "type": "string"
+          },
+          "timeout_seconds": {
+            "title": "Timeout Seconds",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "task_id",
+          "task_graph_id",
+          "source_execution_pack_version_id",
+          "objective",
+          "acceptance_criteria",
+          "project_summary",
+          "source_excerpts",
+          "decisions_constraints",
+          "allowed_tools",
+          "output_schema",
+          "max_iterations",
+          "timeout_seconds",
+          "cost_ceiling_cents",
+          "checksum_sha256",
+          "created_at"
+        ],
+        "title": "AgentContextPackageResponse",
+        "type": "object"
+      },
+      "AgentDefinitionListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AgentDefinitionResponse"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "AgentDefinitionListResponse",
+        "type": "object"
+      },
+      "AgentDefinitionResponse": {
+        "properties": {
+          "allowed_task_types": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Allowed Task Types",
+            "type": "array"
+          },
+          "allowed_tools": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Allowed Tools",
+            "type": "array"
+          },
+          "cost_ceiling_cents": {
+            "title": "Cost Ceiling Cents",
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "denied_actions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Denied Actions",
+            "type": "array"
+          },
+          "escalation_conditions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Escalation Conditions",
+            "type": "array"
+          },
+          "evaluation_rubric": {
+            "additionalProperties": true,
+            "title": "Evaluation Rubric",
+            "type": "object"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "input_schema": {
+            "additionalProperties": true,
+            "title": "Input Schema",
+            "type": "object"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "max_iterations": {
+            "title": "Max Iterations",
+            "type": "integer"
+          },
+          "model_policy": {
+            "additionalProperties": true,
+            "title": "Model Policy",
+            "type": "object"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "output_schema": {
+            "additionalProperties": true,
+            "title": "Output Schema",
+            "type": "object"
+          },
+          "purpose": {
+            "title": "Purpose",
+            "type": "string"
+          },
+          "timeout_seconds": {
+            "title": "Timeout Seconds",
+            "type": "integer"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "key",
+          "version",
+          "name",
+          "purpose",
+          "allowed_task_types",
+          "input_schema",
+          "output_schema",
+          "allowed_tools",
+          "denied_actions",
+          "model_policy",
+          "max_iterations",
+          "timeout_seconds",
+          "cost_ceiling_cents",
+          "escalation_conditions",
+          "evaluation_rubric",
+          "is_active",
+          "created_at"
+        ],
+        "title": "AgentDefinitionResponse",
+        "type": "object"
+      },
+      "AgentRunCancelRequest": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "title": "AgentRunCancelRequest",
+        "type": "object"
+      },
+      "AgentRunCreate": {
+        "properties": {
+          "agent_key": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Agent Key",
+            "type": "string"
+          },
+          "agent_version": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agent Version"
+          },
+          "model_name": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Name"
+          },
+          "model_provider": {
+            "anyOf": [
+              {
+                "enum": [
+                  "rules",
+                  "hermes",
+                  "cloud"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Provider"
+          }
+        },
+        "required": [
+          "agent_key"
+        ],
+        "title": "AgentRunCreate",
+        "type": "object"
+      },
+      "AgentRunEventListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AgentRunEventResponse"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "AgentRunEventListResponse",
+        "type": "object"
+      },
+      "AgentRunEventResponse": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "from_state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From State"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "title": "Payload",
+            "type": "object"
+          },
+          "run_id": {
+            "format": "uuid",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "sequence": {
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "to_state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "To State"
+          }
+        },
+        "required": [
+          "id",
+          "run_id",
+          "sequence",
+          "event_type",
+          "from_state",
+          "to_state",
+          "message",
+          "payload",
+          "created_at"
+        ],
+        "title": "AgentRunEventResponse",
+        "type": "object"
+      },
+      "AgentRunListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AgentRunResponse"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "AgentRunListResponse",
+        "type": "object"
+      },
+      "AgentRunResponse": {
+        "properties": {
+          "agent_key": {
+            "title": "Agent Key",
+            "type": "string"
+          },
+          "agent_name": {
+            "title": "Agent Name",
+            "type": "string"
+          },
+          "agent_version": {
+            "title": "Agent Version",
+            "type": "integer"
+          },
+          "attempt_number": {
+            "title": "Attempt Number",
+            "type": "integer"
+          },
+          "cancelled_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cancelled At"
+          },
+          "context_package": {
+            "$ref": "#/components/schemas/AgentContextPackageResponse"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "input": {
+            "additionalProperties": true,
+            "title": "Input",
+            "type": "object"
+          },
+          "model_name": {
+            "title": "Model Name",
+            "type": "string"
+          },
+          "model_provider": {
+            "title": "Model Provider",
+            "type": "string"
+          },
+          "output": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "project_title": {
+            "title": "Project Title",
+            "type": "string"
+          },
+          "retry_of_run_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retry Of Run Id"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At"
+          },
+          "state": {
+            "enum": [
+              "created",
+              "queued",
+              "preparing_context",
+              "running",
+              "waiting_for_tool",
+              "waiting_for_approval",
+              "needs_review",
+              "succeeded",
+              "failed",
+              "cancelled"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "task_id": {
+            "format": "uuid",
+            "title": "Task Id",
+            "type": "string"
+          },
+          "task_title": {
+            "title": "Task Title",
+            "type": "string"
+          },
+          "tool_allowlist": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Tool Allowlist",
+            "type": "array"
+          },
+          "tool_invocations": {
+            "items": {
+              "$ref": "#/components/schemas/AgentToolInvocationResponse"
+            },
+            "title": "Tool Invocations",
+            "type": "array"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/AgentRunUsageResponse"
+          },
+          "verification_of_run_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verification Of Run Id"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "project_title",
+          "task_id",
+          "task_title",
+          "agent_key",
+          "agent_name",
+          "agent_version",
+          "state",
+          "attempt_number",
+          "retry_of_run_id",
+          "verification_of_run_id",
+          "model_provider",
+          "model_name",
+          "tool_allowlist",
+          "input",
+          "output",
+          "error",
+          "usage",
+          "context_package",
+          "tool_invocations",
+          "created_at",
+          "updated_at",
+          "started_at",
+          "finished_at",
+          "cancelled_at"
+        ],
+        "title": "AgentRunResponse",
+        "type": "object"
+      },
+      "AgentRunRetryRequest": {
+        "properties": {
+          "model_name": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Name"
+          },
+          "model_provider": {
+            "anyOf": [
+              {
+                "enum": [
+                  "rules",
+                  "hermes",
+                  "cloud"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Provider"
+          }
+        },
+        "title": "AgentRunRetryRequest",
+        "type": "object"
+      },
+      "AgentRunUsageResponse": {
+        "properties": {
+          "completion_tokens": {
+            "title": "Completion Tokens",
+            "type": "integer"
+          },
+          "estimated_cost_cents": {
+            "title": "Estimated Cost Cents",
+            "type": "integer"
+          },
+          "prompt_tokens": {
+            "title": "Prompt Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "prompt_tokens",
+          "completion_tokens",
+          "estimated_cost_cents"
+        ],
+        "title": "AgentRunUsageResponse",
+        "type": "object"
+      },
+      "AgentToolInvocationResponse": {
+        "properties": {
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "arguments_hash": {
+            "title": "Arguments Hash",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "decision": {
+            "title": "Decision",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result"
+          },
+          "run_id": {
+            "format": "uuid",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "tool_name": {
+            "title": "Tool Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "run_id",
+          "tool_name",
+          "decision",
+          "arguments_hash",
+          "arguments",
+          "result",
+          "error",
+          "created_at"
+        ],
+        "title": "AgentToolInvocationResponse",
+        "type": "object"
+      },
+      "AgentVerificationResponse": {
+        "properties": {
+          "qa_run": {
+            "$ref": "#/components/schemas/AgentRunResponse"
+          },
+          "source_run": {
+            "$ref": "#/components/schemas/AgentRunResponse"
+          }
+        },
+        "required": [
+          "source_run",
+          "qa_run"
+        ],
+        "title": "AgentVerificationResponse",
+        "type": "object"
+      },
       "AuthenticatedOwner": {
         "properties": {
           "email": {
-            "type": "string",
             "format": "email",
-            "title": "Email"
+            "title": "Email",
+            "type": "string"
           },
           "workspace_slug": {
-            "type": "string",
-            "title": "Workspace Slug"
+            "title": "Workspace Slug",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "email",
           "workspace_slug"
         ],
-        "title": "AuthenticatedOwner"
+        "title": "AuthenticatedOwner",
+        "type": "object"
+      },
+      "Body_upload_capture_file_route_api_v1_captures_files_post": {
+        "properties": {
+          "domain_hint": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain Hint"
+          },
+          "file": {
+            "format": "binary",
+            "title": "File",
+            "type": "string"
+          },
+          "sensitivity": {
+            "default": "internal",
+            "enum": [
+              "public",
+              "internal",
+              "confidential",
+              "restricted"
+            ],
+            "title": "Sensitivity",
+            "type": "string"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 300,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_capture_file_route_api_v1_captures_files_post",
+        "type": "object"
       },
       "CaptureCreate": {
         "properties": {
+          "content": {
+            "maxLength": 500000,
+            "minLength": 1,
+            "title": "Content",
+            "type": "string"
+          },
+          "domain_hint": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain Hint"
+          },
+          "sensitivity": {
+            "default": "internal",
+            "enum": [
+              "public",
+              "internal",
+              "confidential",
+              "restricted"
+            ],
+            "title": "Sensitivity",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
           "type": {
-            "type": "string",
+            "default": "conversation",
             "enum": [
               "conversation",
               "note",
@@ -318,50 +906,15 @@
               "repository"
             ],
             "title": "Type",
-            "default": "conversation"
-          },
-          "title": {
-            "type": "string",
-            "maxLength": 300,
-            "minLength": 1,
-            "title": "Title"
-          },
-          "content": {
-            "type": "string",
-            "maxLength": 500000,
-            "minLength": 1,
-            "title": "Content"
-          },
-          "domain_hint": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 80
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Domain Hint"
-          },
-          "sensitivity": {
-            "type": "string",
-            "enum": [
-              "public",
-              "internal",
-              "confidential",
-              "restricted"
-            ],
-            "title": "Sensitivity",
-            "default": "internal"
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "title",
           "content"
         ],
-        "title": "CaptureCreate"
+        "title": "CaptureCreate",
+        "type": "object"
       },
       "CaptureListResponse": {
         "properties": {
@@ -369,69 +922,87 @@
             "items": {
               "$ref": "#/components/schemas/CaptureResponse"
             },
-            "type": "array",
-            "title": "Items"
+            "title": "Items",
+            "type": "array"
           }
         },
-        "type": "object",
         "required": [
           "items"
         ],
-        "title": "CaptureListResponse"
+        "title": "CaptureListResponse",
+        "type": "object"
+      },
+      "CaptureRelationCreate": {
+        "properties": {
+          "action": {
+            "enum": [
+              "reference",
+              "merge"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "target_capture_id": {
+            "format": "uuid",
+            "title": "Target Capture Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_capture_id",
+          "action"
+        ],
+        "title": "CaptureRelationCreate",
+        "type": "object"
+      },
+      "CaptureRelationResponse": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "relation_type": {
+            "title": "Relation Type",
+            "type": "string"
+          },
+          "source_capture_id": {
+            "format": "uuid",
+            "title": "Source Capture Id",
+            "type": "string"
+          },
+          "target_capture_id": {
+            "format": "uuid",
+            "title": "Target Capture Id",
+            "type": "string"
+          },
+          "workspace_id": {
+            "format": "uuid",
+            "title": "Workspace Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "source_capture_id",
+          "target_capture_id",
+          "relation_type",
+          "created_at"
+        ],
+        "title": "CaptureRelationResponse",
+        "type": "object"
       },
       "CaptureResponse": {
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Id"
-          },
-          "workspace_id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Workspace Id"
-          },
-          "type": {
-            "type": "string",
-            "title": "Type"
-          },
-          "title": {
-            "type": "string",
-            "title": "Title"
-          },
-          "content": {
-            "type": "string",
-            "title": "Content"
-          },
-          "domain_hint": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Domain Hint"
-          },
-          "sensitivity": {
-            "type": "string",
-            "title": "Sensitivity"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status"
-          },
-          "summary": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Summary"
+          "checksum_sha256": {
+            "title": "Checksum Sha256",
+            "type": "string"
           },
           "classification": {
             "anyOf": [
@@ -445,22 +1016,73 @@
             ],
             "title": "Classification"
           },
-          "checksum_sha256": {
-            "type": "string",
-            "title": "Checksum Sha256"
+          "content": {
+            "title": "Content",
+            "type": "string"
           },
           "created_at": {
-            "type": "string",
             "format": "date-time",
-            "title": "Created At"
+            "title": "Created At",
+            "type": "string"
+          },
+          "domain_hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain Hint"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "review_status": {
+            "title": "Review Status",
+            "type": "string"
+          },
+          "sensitivity": {
+            "title": "Sensitivity",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
           },
           "updated_at": {
-            "type": "string",
             "format": "date-time",
-            "title": "Updated At"
+            "title": "Updated At",
+            "type": "string"
+          },
+          "workspace_id": {
+            "format": "uuid",
+            "title": "Workspace Id",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "id",
           "workspace_id",
@@ -470,13 +1092,331 @@
           "domain_hint",
           "sensitivity",
           "status",
+          "review_status",
           "summary",
           "classification",
           "checksum_sha256",
           "created_at",
           "updated_at"
         ],
-        "title": "CaptureResponse"
+        "title": "CaptureResponse",
+        "type": "object"
+      },
+      "CaptureReviewResponse": {
+        "properties": {
+          "capture": {
+            "$ref": "#/components/schemas/CaptureResponse"
+          },
+          "projects": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectResponse"
+            },
+            "title": "Projects",
+            "type": "array"
+          },
+          "related": {
+            "items": {
+              "$ref": "#/components/schemas/RelatedCaptureResponse"
+            },
+            "title": "Related",
+            "type": "array"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceObjectResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "capture",
+          "source",
+          "related",
+          "projects"
+        ],
+        "title": "CaptureReviewResponse",
+        "type": "object"
+      },
+      "DeliverableSpec": {
+        "properties": {
+          "acceptance_criteria": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 12,
+            "minItems": 1,
+            "title": "Acceptance Criteria",
+            "type": "array"
+          },
+          "description": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Description",
+            "type": "string"
+          },
+          "format": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Format",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "format",
+          "acceptance_criteria"
+        ],
+        "title": "DeliverableSpec",
+        "type": "object"
+      },
+      "ExecutionPackApproveRequest": {
+        "properties": {
+          "version_number": {
+            "minimum": 1.0,
+            "title": "Version Number",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version_number"
+        ],
+        "title": "ExecutionPackApproveRequest",
+        "type": "object"
+      },
+      "ExecutionPackContent": {
+        "properties": {
+          "assumptions": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "title": "Assumptions",
+            "type": "array"
+          },
+          "deliverables": {
+            "items": {
+              "$ref": "#/components/schemas/DeliverableSpec"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Deliverables",
+            "type": "array"
+          },
+          "in_scope": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "minItems": 1,
+            "title": "In Scope",
+            "type": "array"
+          },
+          "objective": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Objective",
+            "type": "string"
+          },
+          "out_of_scope": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "title": "Out Of Scope",
+            "type": "array"
+          },
+          "problem_statement": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Problem Statement",
+            "type": "string"
+          },
+          "recommended_agents": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Recommended Agents",
+            "type": "array"
+          },
+          "risks": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "title": "Risks",
+            "type": "array"
+          },
+          "success_criteria": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Success Criteria",
+            "type": "array"
+          },
+          "workstreams": {
+            "items": {
+              "$ref": "#/components/schemas/WorkstreamSpec"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Workstreams",
+            "type": "array"
+          }
+        },
+        "required": [
+          "objective",
+          "problem_statement",
+          "success_criteria",
+          "in_scope",
+          "deliverables",
+          "workstreams"
+        ],
+        "title": "ExecutionPackContent",
+        "type": "object"
+      },
+      "ExecutionPackGenerateRequest": {
+        "properties": {
+          "change_summary": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Summary"
+          }
+        },
+        "title": "ExecutionPackGenerateRequest",
+        "type": "object"
+      },
+      "ExecutionPackResponse": {
+        "properties": {
+          "current_version": {
+            "$ref": "#/components/schemas/ExecutionPackVersionResponse"
+          },
+          "current_version_number": {
+            "title": "Current Version Number",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "versions": {
+            "items": {
+              "$ref": "#/components/schemas/ExecutionPackVersionResponse"
+            },
+            "title": "Versions",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "status",
+          "current_version_number",
+          "current_version",
+          "versions"
+        ],
+        "title": "ExecutionPackResponse",
+        "type": "object"
+      },
+      "ExecutionPackVersionResponse": {
+        "properties": {
+          "approved_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved At"
+          },
+          "change_summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Summary"
+          },
+          "content": {
+            "$ref": "#/components/schemas/ExecutionPackContent"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "version_number": {
+            "title": "Version Number",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "version_number",
+          "content",
+          "change_summary",
+          "created_at",
+          "approved_at"
+        ],
+        "title": "ExecutionPackVersionResponse",
+        "type": "object"
+      },
+      "FileCaptureResponse": {
+        "properties": {
+          "capture": {
+            "$ref": "#/components/schemas/CaptureResponse"
+          },
+          "source": {
+            "$ref": "#/components/schemas/SourceObjectResponse"
+          }
+        },
+        "required": [
+          "capture",
+          "source"
+        ],
+        "title": "FileCaptureResponse",
+        "type": "object"
       },
       "HTTPValidationError": {
         "properties": {
@@ -484,72 +1424,833 @@
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             },
-            "type": "array",
-            "title": "Detail"
+            "title": "Detail",
+            "type": "array"
           }
         },
-        "type": "object",
-        "title": "HTTPValidationError"
+        "title": "HTTPValidationError",
+        "type": "object"
       },
       "HealthResponse": {
         "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status"
-          },
           "service": {
-            "type": "string",
-            "title": "Service"
+            "title": "Service",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "status",
           "service"
         ],
-        "title": "HealthResponse"
+        "title": "HealthResponse",
+        "type": "object"
+      },
+      "ImplementationQueueResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TaskResponse"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ImplementationQueueResponse",
+        "type": "object"
       },
       "LoginRequest": {
         "properties": {
           "email": {
-            "type": "string",
             "format": "email",
-            "title": "Email"
+            "title": "Email",
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "title": "Password"
+            "title": "Password",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "email",
           "password"
         ],
-        "title": "LoginRequest"
+        "title": "LoginRequest",
+        "type": "object"
+      },
+      "ProjectCreate": {
+        "properties": {
+          "blocker": {
+            "anyOf": [
+              {
+                "maxLength": 5000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocker"
+          },
+          "domain": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain"
+          },
+          "next_action": {
+            "anyOf": [
+              {
+                "maxLength": 5000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Action"
+          },
+          "priority": {
+            "default": 50,
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Priority",
+            "type": "integer"
+          },
+          "status": {
+            "default": "planned",
+            "enum": [
+              "planned",
+              "active",
+              "on_hold",
+              "completed",
+              "archived"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "title": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "title": "ProjectCreate",
+        "type": "object"
+      },
+      "ProjectDetailResponse": {
+        "properties": {
+          "blocker": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocker"
+          },
+          "captures": {
+            "items": {
+              "$ref": "#/components/schemas/CaptureResponse"
+            },
+            "title": "Captures",
+            "type": "array"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "next_action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Action"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "workspace_id": {
+            "format": "uuid",
+            "title": "Workspace Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "title",
+          "summary",
+          "domain",
+          "status",
+          "priority",
+          "next_action",
+          "blocker",
+          "created_at",
+          "updated_at",
+          "captures"
+        ],
+        "title": "ProjectDetailResponse",
+        "type": "object"
+      },
+      "ProjectFromCaptureRequest": {
+        "properties": {
+          "blocker": {
+            "anyOf": [
+              {
+                "maxLength": 5000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocker"
+          },
+          "next_action": {
+            "anyOf": [
+              {
+                "maxLength": 5000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Action"
+          },
+          "priority": {
+            "default": 50,
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Priority",
+            "type": "integer"
+          },
+          "status": {
+            "default": "planned",
+            "enum": [
+              "planned",
+              "active",
+              "on_hold",
+              "completed",
+              "archived"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 300,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "title": "ProjectFromCaptureRequest",
+        "type": "object"
+      },
+      "ProjectListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectResponse"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ProjectListResponse",
+        "type": "object"
+      },
+      "ProjectResponse": {
+        "properties": {
+          "blocker": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocker"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domain"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "next_action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Action"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "workspace_id": {
+            "format": "uuid",
+            "title": "Workspace Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "title",
+          "summary",
+          "domain",
+          "status",
+          "priority",
+          "next_action",
+          "blocker",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "ProjectResponse",
+        "type": "object"
+      },
+      "RelatedCaptureResponse": {
+        "properties": {
+          "capture": {
+            "$ref": "#/components/schemas/CaptureResponse"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "capture",
+          "score",
+          "reasons"
+        ],
+        "title": "RelatedCaptureResponse",
+        "type": "object"
+      },
+      "SourceObjectResponse": {
+        "properties": {
+          "capture_id": {
+            "format": "uuid",
+            "title": "Capture Id",
+            "type": "string"
+          },
+          "checksum_sha256": {
+            "title": "Checksum Sha256",
+            "type": "string"
+          },
+          "content_type": {
+            "title": "Content Type",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "extracted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extracted At"
+          },
+          "extracted_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extracted Text"
+          },
+          "extraction_attempts": {
+            "title": "Extraction Attempts",
+            "type": "integer"
+          },
+          "extraction_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extraction Error"
+          },
+          "extraction_status": {
+            "title": "Extraction Status",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "last_attempt_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Attempt At"
+          },
+          "metadata_json": {
+            "additionalProperties": true,
+            "title": "Metadata Json",
+            "type": "object"
+          },
+          "original_filename": {
+            "title": "Original Filename",
+            "type": "string"
+          },
+          "size_bytes": {
+            "title": "Size Bytes",
+            "type": "integer"
+          },
+          "storage_key": {
+            "title": "Storage Key",
+            "type": "string"
+          },
+          "workspace_id": {
+            "format": "uuid",
+            "title": "Workspace Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "capture_id",
+          "storage_key",
+          "original_filename",
+          "content_type",
+          "size_bytes",
+          "checksum_sha256",
+          "extraction_status",
+          "extracted_text",
+          "extraction_error",
+          "metadata_json",
+          "created_at",
+          "extracted_at",
+          "extraction_attempts",
+          "last_attempt_at"
+        ],
+        "title": "SourceObjectResponse",
+        "type": "object"
+      },
+      "TaskGraphResponse": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "source_execution_pack_approved_at": {
+            "format": "date-time",
+            "title": "Source Execution Pack Approved At",
+            "type": "string"
+          },
+          "source_execution_pack_version_id": {
+            "format": "uuid",
+            "title": "Source Execution Pack Version Id",
+            "type": "string"
+          },
+          "source_execution_pack_version_number": {
+            "title": "Source Execution Pack Version Number",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/TaskResponse"
+            },
+            "title": "Tasks",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "status",
+          "source_execution_pack_version_id",
+          "source_execution_pack_version_number",
+          "source_execution_pack_approved_at",
+          "created_at",
+          "tasks"
+        ],
+        "title": "TaskGraphResponse",
+        "type": "object"
+      },
+      "TaskResponse": {
+        "properties": {
+          "blocked_by": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Blocked By",
+            "type": "array"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "dependency_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Dependency Keys",
+            "type": "array"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "effort": {
+            "title": "Effort",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "impact": {
+            "title": "Impact",
+            "type": "integer"
+          },
+          "is_ready": {
+            "title": "Is Ready",
+            "type": "boolean"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "project_title": {
+            "title": "Project Title",
+            "type": "string"
+          },
+          "rank_score": {
+            "title": "Rank Score",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "task_graph_id": {
+            "format": "uuid",
+            "title": "Task Graph Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "urgency": {
+            "title": "Urgency",
+            "type": "integer"
+          },
+          "verification": {
+            "title": "Verification",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "task_graph_id",
+          "project_id",
+          "project_title",
+          "key",
+          "title",
+          "description",
+          "verification",
+          "status",
+          "impact",
+          "urgency",
+          "confidence",
+          "effort",
+          "rank_score",
+          "position",
+          "dependency_keys",
+          "blocked_by",
+          "is_ready",
+          "created_at",
+          "updated_at",
+          "completed_at"
+        ],
+        "title": "TaskResponse",
+        "type": "object"
+      },
+      "TaskStatusUpdate": {
+        "properties": {
+          "status": {
+            "enum": [
+              "planned",
+              "in_progress",
+              "blocked",
+              "done",
+              "skipped"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "TaskStatusUpdate",
+        "type": "object"
       },
       "TokenResponse": {
         "properties": {
           "access_token": {
-            "type": "string",
-            "title": "Access Token"
-          },
-          "token_type": {
-            "type": "string",
-            "title": "Token Type",
-            "default": "bearer"
+            "title": "Access Token",
+            "type": "string"
           },
           "expires_in": {
-            "type": "integer",
-            "title": "Expires In"
+            "title": "Expires In",
+            "type": "integer"
+          },
+          "token_type": {
+            "default": "bearer",
+            "title": "Token Type",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "access_token",
           "expires_in"
         ],
-        "title": "TokenResponse"
+        "title": "TokenResponse",
+        "type": "object"
+      },
+      "ToolInvocationRequest": {
+        "properties": {
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "tool_name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Tool Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool_name"
+        ],
+        "title": "ToolInvocationRequest",
+        "type": "object"
       },
       "ValidationError": {
         "properties": {
@@ -564,31 +2265,1838 @@
                 }
               ]
             },
-            "type": "array",
-            "title": "Location"
+            "title": "Location",
+            "type": "array"
           },
           "msg": {
-            "type": "string",
-            "title": "Message"
+            "title": "Message",
+            "type": "string"
           },
           "type": {
-            "type": "string",
-            "title": "Error Type"
+            "title": "Error Type",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "loc",
           "msg",
           "type"
         ],
-        "title": "ValidationError"
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "WorkstreamSpec": {
+        "properties": {
+          "goal": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Goal",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "steps": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Steps",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "goal",
+          "steps"
+        ],
+        "title": "WorkstreamSpec",
+        "type": "object"
       }
     },
     "securitySchemes": {
       "HTTPBearer": {
-        "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "description": "Governed execution API for Ryan Agent OS.",
+    "title": "Ryan Agent OS API",
+    "version": "0.5.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/agent-runs": {
+      "get": {
+        "operationId": "list_agent_runs_route_api_v1_agent_runs_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Agent Runs Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/api/v1/agent-runs/{run_id}": {
+      "get": {
+        "operationId": "get_agent_run_route_api_v1_agent_runs__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Agent Run Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/api/v1/agent-runs/{run_id}/cancel": {
+      "post": {
+        "operationId": "cancel_agent_run_route_api_v1_agent_runs__run_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentRunCancelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cancel Agent Run Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/api/v1/agent-runs/{run_id}/events": {
+      "get": {
+        "operationId": "get_agent_run_events_route_api_v1_agent_runs__run_id__events_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunEventListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Agent Run Events Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/api/v1/agent-runs/{run_id}/events/stream": {
+      "get": {
+        "operationId": "stream_agent_run_events_route_api_v1_agent_runs__run_id__events_stream_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "after_sequence",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "After Sequence",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "follow_seconds",
+            "required": false,
+            "schema": {
+              "default": 15,
+              "maximum": 60,
+              "minimum": 0,
+              "title": "Follow Seconds",
+              "type": "number"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Last-Event-ID",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Last-Event-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Stream Agent Run Events Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/api/v1/agent-runs/{run_id}/execute": {
+      "post": {
+        "operationId": "execute_agent_run_route_api_v1_agent_runs__run_id__execute_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Execute Agent Run Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/api/v1/agent-runs/{run_id}/retry": {
+      "post": {
+        "operationId": "retry_agent_run_route_api_v1_agent_runs__run_id__retry_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentRunRetryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Retry Agent Run Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/api/v1/agent-runs/{run_id}/tool-invocations": {
+      "post": {
+        "operationId": "record_tool_invocation_route_api_v1_agent_runs__run_id__tool_invocations_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToolInvocationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentToolInvocationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Record Tool Invocation Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/api/v1/agent-runs/{run_id}/verify": {
+      "post": {
+        "operationId": "verify_agent_run_route_api_v1_agent_runs__run_id__verify_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentVerificationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Verify Agent Run Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/api/v1/agents": {
+      "get": {
+        "operationId": "list_agents_route_api_v1_agents_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentDefinitionListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Agents Route",
+        "tags": [
+          "agents"
+        ]
+      }
+    },
+    "/api/v1/agents/{agent_key}/versions": {
+      "get": {
+        "operationId": "list_agent_versions_route_api_v1_agents__agent_key__versions_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_key",
+            "required": true,
+            "schema": {
+              "title": "Agent Key",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentDefinitionListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Agent Versions Route",
+        "tags": [
+          "agents"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Login",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "me_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatedOwner"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Me",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/captures": {
+      "get": {
+        "operationId": "list_capture_route_api_v1_captures_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptureListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Capture Route",
+        "tags": [
+          "captures"
+        ]
+      },
+      "post": {
+        "operationId": "create_capture_route_api_v1_captures_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptureCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptureResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Capture Route",
+        "tags": [
+          "captures"
+        ]
+      }
+    },
+    "/api/v1/captures/files": {
+      "post": {
+        "operationId": "upload_capture_file_route_api_v1_captures_files_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_capture_file_route_api_v1_captures_files_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileCaptureResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Upload Capture File Route",
+        "tags": [
+          "captures"
+        ]
+      }
+    },
+    "/api/v1/captures/{capture_id}": {
+      "get": {
+        "operationId": "get_capture_route_api_v1_captures__capture_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "capture_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Capture Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptureResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Capture Route",
+        "tags": [
+          "captures"
+        ]
+      }
+    },
+    "/api/v1/captures/{capture_id}/archive": {
+      "post": {
+        "operationId": "archive_capture_route_api_v1_captures__capture_id__archive_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "capture_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Capture Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptureResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Archive Capture Route",
+        "tags": [
+          "captures"
+        ]
+      }
+    },
+    "/api/v1/captures/{capture_id}/process": {
+      "post": {
+        "operationId": "process_capture_route_api_v1_captures__capture_id__process_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "capture_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Capture Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptureResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Process Capture Route",
+        "tags": [
+          "captures"
+        ]
+      }
+    },
+    "/api/v1/captures/{capture_id}/projects": {
+      "post": {
+        "operationId": "create_project_from_capture_route_api_v1_captures__capture_id__projects_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "capture_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Capture Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectFromCaptureRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Project From Capture Route",
+        "tags": [
+          "captures"
+        ]
+      }
+    },
+    "/api/v1/captures/{capture_id}/relations": {
+      "post": {
+        "operationId": "create_capture_relation_route_api_v1_captures__capture_id__relations_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "capture_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Capture Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptureRelationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptureRelationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Capture Relation Route",
+        "tags": [
+          "captures"
+        ]
+      }
+    },
+    "/api/v1/captures/{capture_id}/retry": {
+      "post": {
+        "operationId": "retry_capture_route_api_v1_captures__capture_id__retry_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "capture_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Capture Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileCaptureResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Retry Capture Route",
+        "tags": [
+          "captures"
+        ]
+      }
+    },
+    "/api/v1/captures/{capture_id}/review": {
+      "get": {
+        "operationId": "get_capture_review_route_api_v1_captures__capture_id__review_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "capture_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Capture Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptureReviewResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Capture Review Route",
+        "tags": [
+          "captures"
+        ]
+      }
+    },
+    "/api/v1/projects": {
+      "get": {
+        "operationId": "list_projects_route_api_v1_projects_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 24,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Projects Route",
+        "tags": [
+          "projects"
+        ]
+      },
+      "post": {
+        "operationId": "create_project_route_api_v1_projects_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Project Route",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
+    "/api/v1/projects/{project_id}": {
+      "get": {
+        "operationId": "get_project_route_api_v1_projects__project_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Project Route",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
+    "/api/v1/projects/{project_id}/captures/{capture_id}": {
+      "post": {
+        "operationId": "link_capture_route_api_v1_projects__project_id__captures__capture_id__post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "capture_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Capture Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Link Capture Route",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
+    "/api/v1/projects/{project_id}/execution-pack": {
+      "get": {
+        "operationId": "get_execution_pack_route_api_v1_projects__project_id__execution_pack_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionPackResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Execution Pack Route",
+        "tags": [
+          "projects"
+        ]
+      },
+      "post": {
+        "operationId": "generate_execution_pack_route_api_v1_projects__project_id__execution_pack_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecutionPackGenerateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionPackResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Generate Execution Pack Route",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
+    "/api/v1/projects/{project_id}/execution-pack/approve": {
+      "post": {
+        "operationId": "approve_execution_pack_route_api_v1_projects__project_id__execution_pack_approve_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecutionPackApproveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionPackResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Approve Execution Pack Route",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
+    "/api/v1/projects/{project_id}/task-graph": {
+      "get": {
+        "operationId": "get_task_graph_route_api_v1_projects__project_id__task_graph_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskGraphResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Task Graph Route",
+        "tags": [
+          "task-graphs"
+        ]
+      },
+      "post": {
+        "operationId": "generate_task_graph_route_api_v1_projects__project_id__task_graph_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskGraphResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Generate Task Graph Route",
+        "tags": [
+          "task-graphs"
+        ]
+      }
+    },
+    "/api/v1/queue": {
+      "get": {
+        "operationId": "implementation_queue_route_api_v1_queue_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImplementationQueueResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Implementation Queue Route",
+        "tags": [
+          "tasks"
+        ]
+      }
+    },
+    "/api/v1/tasks/{task_id}": {
+      "patch": {
+        "operationId": "update_task_route_api_v1_tasks__task_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Task Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskStatusUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Task Route",
+        "tags": [
+          "tasks"
+        ]
+      }
+    },
+    "/api/v1/tasks/{task_id}/agent-runs": {
+      "post": {
+        "operationId": "create_agent_run_route_api_v1_tasks__task_id__agent_runs_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Task Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentRunCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Agent Run Route",
+        "tags": [
+          "agent-runs"
+        ]
+      }
+    },
+    "/health/live": {
+      "get": {
+        "operationId": "live_health_live_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Live",
+        "tags": [
+          "health"
+        ]
       }
     }
   }

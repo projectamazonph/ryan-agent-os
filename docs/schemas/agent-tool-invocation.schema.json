@@ -1,0 +1,72 @@
+{
+  "properties": {
+    "arguments": {
+      "additionalProperties": true,
+      "title": "Arguments",
+      "type": "object"
+    },
+    "arguments_hash": {
+      "title": "Arguments Hash",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "decision": {
+      "title": "Decision",
+      "type": "string"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Error"
+    },
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "result": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Result"
+    },
+    "run_id": {
+      "format": "uuid",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "tool_name": {
+      "title": "Tool Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "run_id",
+    "tool_name",
+    "decision",
+    "arguments_hash",
+    "arguments",
+    "result",
+    "error",
+    "created_at"
+  ],
+  "title": "AgentToolInvocationResponse",
+  "type": "object"
+}

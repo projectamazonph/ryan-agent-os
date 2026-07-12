@@ -90,15 +90,15 @@
 
 ## Epic 8: Agent runs
 
-- [ ] RAOS-801 Create agent-definition registry
-- [ ] RAOS-802 Implement context builder
-- [ ] RAOS-803 Implement agent-run state machine
-- [ ] RAOS-804 Add tool allowlists
-- [ ] RAOS-805 Add streaming events
-- [ ] RAOS-806 Build agent-run console
-- [ ] RAOS-807 Add retry, stop, and fallback
-- [ ] RAOS-808 Record usage and cost
-- [ ] RAOS-809 Implement QA verification agent
+- [x] RAOS-801 Create agent-definition registry
+- [x] RAOS-802 Implement context builder
+- [x] RAOS-803 Implement agent-run state machine
+- [x] RAOS-804 Add tool allowlists
+- [x] RAOS-805 Add streaming events
+- [x] RAOS-806 Build agent-run console
+- [x] RAOS-807 Add retry, stop, and fallback
+- [x] RAOS-808 Record usage and cost
+- [x] RAOS-809 Implement QA verification agent
 
 ## Epic 9: Approval center
 

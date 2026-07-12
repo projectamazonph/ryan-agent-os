@@ -1,0 +1,113 @@
+{
+  "properties": {
+    "acceptance_criteria": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Acceptance Criteria",
+      "type": "array"
+    },
+    "allowed_tools": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Allowed Tools",
+      "type": "array"
+    },
+    "checksum_sha256": {
+      "title": "Checksum Sha256",
+      "type": "string"
+    },
+    "cost_ceiling_cents": {
+      "title": "Cost Ceiling Cents",
+      "type": "integer"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "decisions_constraints": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Decisions Constraints",
+      "type": "array"
+    },
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "max_iterations": {
+      "title": "Max Iterations",
+      "type": "integer"
+    },
+    "objective": {
+      "title": "Objective",
+      "type": "string"
+    },
+    "output_schema": {
+      "additionalProperties": true,
+      "title": "Output Schema",
+      "type": "object"
+    },
+    "project_id": {
+      "format": "uuid",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "project_summary": {
+      "title": "Project Summary",
+      "type": "string"
+    },
+    "source_excerpts": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Source Excerpts",
+      "type": "array"
+    },
+    "source_execution_pack_version_id": {
+      "format": "uuid",
+      "title": "Source Execution Pack Version Id",
+      "type": "string"
+    },
+    "task_graph_id": {
+      "format": "uuid",
+      "title": "Task Graph Id",
+      "type": "string"
+    },
+    "task_id": {
+      "format": "uuid",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "timeout_seconds": {
+      "title": "Timeout Seconds",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "id",
+    "project_id",
+    "task_id",
+    "task_graph_id",
+    "source_execution_pack_version_id",
+    "objective",
+    "acceptance_criteria",
+    "project_summary",
+    "source_excerpts",
+    "decisions_constraints",
+    "allowed_tools",
+    "output_schema",
+    "max_iterations",
+    "timeout_seconds",
+    "cost_ceiling_cents",
+    "checksum_sha256",
+    "created_at"
+  ],
+  "title": "AgentContextPackageResponse",
+  "type": "object"
+}
